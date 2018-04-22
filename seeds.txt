@@ -1,6 +1,6 @@
-INSERT INTO products(product_name, department_name, product_price, stock_quantity)
-VALUES  ("Allegra", "Allergy Relief", 17.99, 15),
-	    ("Tylenol", "Pain Relief", 14.99, 10),
+insert into products(product_name, department_name, product_price, stock_quantity)
+values ("Allegra", "Allergy Relief", 17.99, 15),
+		("Tylenol", "Pain Relief", 14.99, 10),
         ("Tums", "Digestive Health", 6.99, 8),
         ("Centrum", "Multivitamins", 13.99, 20),
         ("KY Jelly", "Sexual Wellness", 19.99, 5),
