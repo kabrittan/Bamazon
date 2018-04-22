@@ -1,16 +1,18 @@
+//Running this application will first display all of the items available for sale, including the ids, names, and prices of products for sale.
+
 //Dependencies and required variables
-require("dotenv").config();
+//require("dotenv").config();
 //Password protection
-var mysqlPW = require("./pwKey.js");
-var password = mysqlPW.mysqlPW.mysql_pw;
+//var mysqlPW = require("./pwKey.js");
+//var password = mysqlPW.mysqlPW.mysql_pw;
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 //Establish connection
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: password,
-    database: "bamazon_db"
+    password: "Assyla!011609",
+    database: "bamazonDB"
 });
 
 var products = [];
@@ -19,15 +21,16 @@ connection.connect();
 connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
-        console.log("ID: " + res[i].id + " || Product: " + res[i].product_name + " || Price: $" + res[i].price);
+        console.log("ID: " + res[i].id + " || Product: " + res[i].product_name + " || Price: $" + res[i].product_price);
         products.push(res[i].product_name);
     }
+    //displays all products and prices, creates the products array;
 
     inquirer.prompt([
         {
             name: "product",
             type: "list",
-            message: "Which product would you like to purchase?",
+            message: "Which product\(s\) would you like to purchase?",
             choices: products
         },
         {
@@ -82,15 +85,3 @@ function updateQuantity(newQty, product) {
         }
     );
 };
-
-/*
-Running this should do the following:
--display all items for sale; include id, name, and price
--prompt user to make a choice:
-    -1. id of product to buy
-    -2. how many units
--use customer request to check that there are enough units available
-    -if not, notify customer and end order
-    if so, update sql to show new total units available, show customer total cost of purchase
-    nmp needed: mysql, inquirer
-*/

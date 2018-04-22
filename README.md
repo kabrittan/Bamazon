@@ -1,2 +1,2 @@
 # Bamazon
-Amazon-like Storefront
+An Amazon-like store front **command line interface (CLI)** - a [node.js](https://nodejs.org) and [mySQL](https://www.mysql.com) application, where customers can shop for items, and supervisors and managers can view, monitor and add inventory or new products.
