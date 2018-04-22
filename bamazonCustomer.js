@@ -1,13 +1,12 @@
-
+//Dependencies and required variables
 require("dotenv").config();
-
 var inquirer = require("inquirer");
 var mysql = require("mysql");
-
+//Establish connection
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: ,
+    password: password,
     database: "bamazon_db"
 });
 
