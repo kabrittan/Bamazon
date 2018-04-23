@@ -5,6 +5,7 @@
 //Password protection
 //var mysqlPW = require("./pwKey.js");
 //var password = mysqlPW.mysqlPW.mysql_pw;
+//I couldn't get this to work, so I am having to enter my sql password!!!
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 //Establish connection
@@ -18,58 +19,51 @@ var connection = mysql.createConnection({
 var products = [];
 
 connection.connect();
-connection.query("SELECT * FROM products", function (err, res) {
+connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
-        console.log("ID: " + res[i].id + " || Product: " + res[i].product_name + " || Price: $" + res[i].product_price);
+        console.log("ID: " + res[i].id + "\nProduct: " + res[i].product_name + "\nPrice: $" + res[i].product_price);
         products.push(res[i].product_name);
     }
-    //displays all products and prices, creates the products array;
+    //Displays all products and prices
 
     inquirer.prompt([
         {
             name: "product",
             type: "list",
-            message: "Which product\(s\) would you like to purchase?",
+            message: "Which product would you like to purchase first?",
             choices: products
         },
         {
             name: "quantity",
             message: "How many would you like to purchase?",
-            validate: function (ans) {
-                if (isNaN(ans) === true) {
-                    console.log("\nPlease choose a numerical value.")
+            validate: function(resp) {
+                if (isNaN(resp) === true) {
+                    console.log("\nPlease choose a number.")
                     return false;
-                    //if user input is not a number than it will not accept the value of the input
+                    //If user inputs anything other than a number, it will prompt user to choose a number
                 }
                 else {
                     return true;
                 }
             }
         }
-    ]).then(function (answers) {
-        var arrPosition = products.indexOf(answers.product);
-        //this will refer to the object of the chosen product
-        var qty = parseInt(answers.quantity);
-        if (qty < res[arrPosition].stock_quantity) {
-            var newQty = res[arrPosition].stock_quantity - qty;
-            //this will be used to update the quantities in mySQL
-            var tax = parseFloat((qty * res[arrPosition].price * 0.073).toFixed(2));
-            //We live in Arizona, we have to pay taxes on online sales
-            var total = (tax + (answers.quantity * res[arrPosition].price)).toFixed(2);
-            console.log("Your purchase:\n" + answers.product + " || QTY: " + qty + " || Price/Unit: $" + res[arrPosition].price
-                + "\nTax at 7.3%: $" + tax + "\nShipping and Handling: $0.00 (bPrime member)\nTotal: $" + total);
-            updateQuantity(newQty, answers.product);
-            //updates quanity in mySQL
+    ]).then(function(response) {
+        var prodArray = products.indexOf(response.product);
+        //Reference the chosen product
+        var qty = parseInt(response.quantity);
+        if (qty < res[prodArray].stock_quantity) {
+            var newQty = res[prodArray].stock_quantity - qty;
+            //Updates quantity in DB
+            updateQuantity(newQty, response.product);
             connection.end();
         }
         else {
-            console.log("We do not have enough " + answers.product + " in stock to fulfill your order.  We currently have " + res[arrPosition].stock_quantity + " in stock at this time.");
+            console.log("Insufficient quantity of " + response.product + " in stock to fulfill your request.  We currently have " + res[prodArray].stock_quantity + " in stock at this time.");
             connection.end();
         }
     });
 });
-
 
 function updateQuantity(newQty, product) {
     connection.query(
@@ -80,7 +74,7 @@ function updateQuantity(newQty, product) {
             {
                 product_name: product
             }
-        ], function (err, res) {
+        ], function(err, res) {
             if (err) throw err;
         }
     );
