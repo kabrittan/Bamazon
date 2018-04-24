@@ -38,8 +38,8 @@ connection.query("SELECT * FROM products", function(err, res) {
         {
             name: "quantity",
             message: "How many would you like to purchase?",
-            validate: function(resp) {
-                if (isNaN(resp) === true) {
+            validate: function(ans) {
+                if (isNaN(ans) === true) {
                     console.log("\nPlease choose a number.")
                     return false;
                     //If user inputs anything other than a number, it will prompt user to choose a number
@@ -48,19 +48,19 @@ connection.query("SELECT * FROM products", function(err, res) {
                 }
             }
         }
-    ]).then(function(response) {
-        var prodArray = products.indexOf(response.product);
+    ]).then(function(answer) {
+        var prodArray = products.indexOf(answer.product);
         //Reference the chosen product
-        var qty = parseInt(response.quantity);
+        var qty = parseInt(answer.quantity);
         if (qty < res[prodArray].stock_quantity) {
             var newQty = res[prodArray].stock_quantity - qty;
             //Updates quantity in DB
-            console.log("Your purchase:\n" + response.product + " * Quantity: " + qty + " * Cost: $" + res[prodArray].product_price
-                + "\nTotal: $" + total);
-            updateQuantity(newQty, response.product);
+            console.log("Your purchase:\n" + answer.product + " * Quantity: " + qty + " * Cost: $" + res[prodArray].product_price
+                + "\nTotal: $" + answer.price * answer.quantity);
+            updateQuantity(newQty, answer.product);
             connection.end();
         } else {
-            console.log("Insufficient quantity of " + response.product + " in stock to fulfill your request.  We currently have " + res[prodArray].stock_quantity + " in stock at this time.");
+            console.log("Insufficient quantity of " + answer.product + " in stock to fulfill your request.  We currently have " + res[prodArray].stock_quantity + " in stock at this time.");
             connection.end();
         }
     });
