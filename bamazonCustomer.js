@@ -70,7 +70,7 @@ function updateQuantity(newQty, product) {
     connection.query(
         "UPDATE products SET ? WHERE ?", [
             {
-                product_quantity: newQty
+                stock_quantity: newQty
             },
             {
                 product_name: product

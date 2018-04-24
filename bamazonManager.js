@@ -39,7 +39,6 @@ inquirer.prompt([
 });
 
 function viewProd() {
-    //This part is basically a copy and paste from bamazonCustomer
     connection.connect();
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
@@ -56,6 +55,28 @@ function lowInv() {
         if (err) throw err;
         for (var i = 0; i < res.length; i++) {
             console.log("Low inventory on the following products:\nId:" + res[i].id + " * Item: " + res[i].product_name + " * Quantity: " + res[i].stock_quantity);
+        } 
+    });
+    connection.end();
+}
+
+function addInv() {
+    connection.connect();
+    connection.query("SELECT * FROM products WHERE ***", function(err,res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            console.log(");
+        } 
+    });
+    connection.end();
+}
+
+function addProd() {
+    connection.connect();
+    connection.query("SELECT * FROM products WHERE ***", function(err,res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            console.log("");
         } 
     });
     connection.end();
