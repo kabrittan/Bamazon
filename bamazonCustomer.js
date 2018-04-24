@@ -52,7 +52,7 @@ connection.query("SELECT * FROM products", function(err, res) {
         var prodArray = products.indexOf(response.product);
         //Reference the chosen product
         var qty = parseInt(response.quantity);
-        if (qty < res[prodArray].stock__quantity) {
+        if (qty < res[prodArray].stock_quantity) {
             var newQty = res[prodArray].stock_quantity - qty;
             //Updates quantity in DB
             console.log("Your purchase:\n" + response.product + " * Quantity: " + qty + " * Cost: $" + res[prodArray].product_price
