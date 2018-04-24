@@ -56,11 +56,11 @@ connection.query("SELECT * FROM products", function(err, res) {
             var newQty = res[prodArray].stock_quantity - qty;
             //Updates quantity in DB
             console.log("Your purchase:\n" + answer.product + " * Quantity: " + qty + " * Cost: $" + res[prodArray].product_price
-                + "\nTotal: $" + answer.price * answer.quantity);
+                + "\nYour Total is: $" + res[prodArray].product_price * qty + "\nTHANK YOU for shopping with us today!!");
             updateQuantity(newQty, answer.product);
             connection.end();
         } else {
-            console.log("Insufficient quantity of " + answer.product + " in stock to fulfill your request.  We currently have " + res[prodArray].stock_quantity + " in stock at this time.");
+            console.log("We are very sorry!!  We have an insufficient quantity of " + answer.product + " in stock to fulfill your request.  We currently have " + res[prodArray].stock_quantity + " units on hand at this time.  Please try again at a later time - and, thank you for shopping with us!!");
             connection.end();
         }
     });
